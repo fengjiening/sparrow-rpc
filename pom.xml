@@ -12,6 +12,8 @@
         <module>sparrow-api</module>
         <module>sparrow-core</module>
         <module>sparrow-rpc-registry</module>
+        <module>sparrow-rpc-third-party</module>
+        <module>sparrow-rpc-springboot-starter</module>
 
     </modules>
 
