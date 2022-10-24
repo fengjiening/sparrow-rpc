@@ -7,4 +7,5 @@ package com.fengjiening.sparrow.registry;
  * @Version: 0.0
  */
 public class RegistryContext {
+    AbsRegistry absRegistry;
 }

@@ -12,11 +12,11 @@
     <artifactId>sparrow-rpc-core</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.fengjiening</groupId>
-            <artifactId>sparrow-rpc-third-party</artifactId>
-            <version>${revision}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.fengjiening</groupId>-->
+<!--            <artifactId>sparrow-rpc-third-party</artifactId>-->
+<!--            <version>${revision}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.fengjiening</groupId>
             <artifactId>sparrow-rpc-common</artifactId>
