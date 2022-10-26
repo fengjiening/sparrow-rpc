@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.contants;
+package com.fengjiening.sparrow.server;
 
 
 public interface CommonConstant {
@@ -27,4 +27,6 @@ public interface CommonConstant {
      */
     public static final Integer SC_JEECG_NO_AUTHZ = 510;
 
+    public static final String NO_ERROR_CODE = "0000";
+    public static final String FILE_NOT_FIND_CODE = "9020";
 }
