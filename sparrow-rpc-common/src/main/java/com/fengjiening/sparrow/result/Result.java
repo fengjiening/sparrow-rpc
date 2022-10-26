@@ -1,7 +1,7 @@
 package com.fengjiening.sparrow.result;
 
 
-import com.fengjiening.sparrow.server.CommonConstant;
+import com.fengjiening.sparrow.contsants.CommonConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -1,6 +1,7 @@
 package com.fengjiening.sparrow.exception;
 
 import com.fengjiening.sparrow.enums.SparrowCode;
+import com.fengjiening.sparrow.contsants.CommonConstant;
 
 /**
  * @ClassName: SparrowException
@@ -10,5 +11,5 @@ import com.fengjiening.sparrow.enums.SparrowCode;
  * @Version: 1.0
  */
 public interface SparrowExceptionCode {
-    public static final SparrowCode REQUEST = new SparrowCode((short)1);
+    public static final SparrowCode FILE_NOT_FIND_CODE = new SparrowCode(CommonConstant.NO_ERROR_CODE);
 }

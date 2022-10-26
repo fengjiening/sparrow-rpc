@@ -1,10 +1,7 @@
 package com.fengjiening.sparrow.exception;
 
 import com.fengjiening.sparrow.enums.SparrowCode;
-import com.fengjiening.sparrow.server.CommonConstant;
-import org.springframework.util.StringUtils;
-
-import java.io.IOException;
+import com.fengjiening.sparrow.contsants.CommonConstant;
 
 /**
  * @ClassName: SparrowException

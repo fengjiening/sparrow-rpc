@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.server;
+package com.fengjiening.sparrow.contsants;
 
 
 public interface CommonConstant {
