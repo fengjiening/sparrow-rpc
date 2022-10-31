@@ -1,27 +1,39 @@
 package com.fengjiening.sparrow.cilent.handle;
 
+import com.fengjiening.sparrow.config.protocol.SparrowProtocol;
+import com.fengjiening.sparrow.config.protocol.SparrowSerializer;
+import com.fengjiening.sparrow.config.vo.ChannelData;
+import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.enums.SerializeType;
+import com.fengjiening.sparrow.factory.SparrowResolverFactory;
+import com.fengjiening.sparrow.resolver.SparrowResolver;
+import com.fengjiening.sparrow.result.Result;
+import com.fengjiening.sparrow.utill.LogInterceptor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  * @ClassName: NettyClientHandle
- * @Description: TODO
+ * @Description: NettyClientHandle
  * @Date: 2022/10/25 20:39
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public class NettyClientHandle extends SimpleChannelInboundHandler<String> {
-
+public class NettyClientHandle extends SimpleChannelInboundHandler<RemotingCommand> {
+    private static SparrowResolverFactory sparrowResolverFactory=SparrowResolverFactory.getInstance();
     /**
      * 接收客户端发送的数据
-     *
+     * rpc请求接受
      * @param channelHandlerContext
-     * @param msg
+     * @param command
      * @throws Exception
      */
     @Override
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        System.out.println("接收到的客户端发送的消息：" + msg);
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, RemotingCommand command) throws Exception {
+        LogInterceptor.debug("接收到的服务端发送的消息：" + command.toString()+"thread name - "+Thread.currentThread().getName());
+        SparrowResolver resolver = sparrowResolverFactory.getResolver(command);
+        resolver.doExecute(channelHandlerContext);
+
     }
 
     /**
@@ -29,8 +41,16 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<String> {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelActive");
+        LogInterceptor.info("服务端接入");
         super.channelActive(ctx);
+        Result<Object> ok = Result.ok("hahah");
+        byte[] serialize = SparrowSerializer.serialize(ok);
+
+        RemotingCommand command = RemotingCommand.builder()
+                .length(serialize.length+ SparrowProtocol.HEADER_LENGTH).id(999)
+                .serializeType(SerializeType.SPARROW)
+                .token("1ca2f21bdc0f3ab383cd21518ff357ec".getBytes()).body(serialize).build();
+        ctx.writeAndFlush(command);
     }
 
     /**
@@ -38,19 +58,7 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<String> {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelInactive");
+        LogInterceptor.info("服务端断开");
         super.channelInactive(ctx);
-    }
-
-    /**
-     * 异常处理
-     *
-     * @param ctx
-     * @param cause
-     * @throws Exception
-     */
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        super.exceptionCaught(ctx, cause);
     }
 }

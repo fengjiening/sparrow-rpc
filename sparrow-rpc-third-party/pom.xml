@@ -17,7 +17,8 @@
         <fastjson.version>2.0.3</fastjson.version>
         <netty.version>5.0.0.Alpha2</netty.version>
         <spring.version>5.3.11</spring.version>
-
+        <protostuff.version>1.7.4</protostuff.version>
+        <easy-rules.version>3.3.0</easy-rules.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,26 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <!-- 用protostuff做序列化-->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+
+        <!--easy rules核心库-->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-rules-core</artifactId>
+            <version>${easy-rules.version}</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.enums;
+package com.fengjiening.sparrow.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

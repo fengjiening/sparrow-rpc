@@ -1,10 +1,14 @@
 package com.fengjiening.sparrow.cilent.app;
 
 import com.fengjiening.sparrow.cilent.handle.NettyClientHandle;
+import com.fengjiening.sparrow.config.SparrowDecoder;
+import com.fengjiening.sparrow.config.SparrowEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
@@ -38,30 +42,18 @@ public class TcpClientApp {
 
                 @Override
                 protected void initChannel(Channel channel) throws Exception {
-                    channel.pipeline().addLast("encoder", new StringEncoder());
-                    channel.pipeline().addLast("decoder", new StringDecoder());
-                    channel.pipeline().addLast("clientHandler", new NettyClientHandle());
+                    // 添加用于处理粘包和拆包问题的处理器
+                    channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4));
+                    channel.pipeline().addLast(new LengthFieldPrepender(4));
+                    channel.pipeline().addLast( new SparrowEncoder());
+                    channel.pipeline().addLast(new SparrowDecoder());
+                    channel.pipeline().addLast( new NettyClientHandle());
                 }
             });
 
             // 连接服务端
-            ChannelFuture future = bootstrap.connect("127.0.0.1", 10101);
-            // 得到通道，给服务端写数据
-            Channel channel = future.channel();
-            channel.writeAndFlush("hello");
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            while (true){
-                String line = bufferedReader.readLine();
-                if(!"stop".equals(line)){
-                    System.out.println("请输入：");
-                    future.channel().writeAndFlush(line);
-                }
-                else {
-                    break;
-                }
-            }
-
+            ChannelFuture future = bootstrap.connect("127.0.0.1", 10101).sync();
+            future.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();
         }finally {

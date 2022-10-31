@@ -1,6 +1,5 @@
 package com.fengjiening.sparrow.exception;
 
-import com.fengjiening.sparrow.enums.SparrowCode;
 import com.fengjiening.sparrow.contsants.CommonConstant;
 
 /**

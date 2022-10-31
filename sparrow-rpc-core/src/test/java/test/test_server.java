@@ -9,7 +9,7 @@ import com.fengjiening.sparrow.server.app.TcpServerApp;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public class test {
+public class test_server {
     public static void main(String[] args) throws InterruptedException {
         new TcpServerApp().start();
     }

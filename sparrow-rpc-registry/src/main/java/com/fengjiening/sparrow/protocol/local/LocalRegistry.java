@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.type.local;
+package com.fengjiening.sparrow.protocol.local;
 
 import com.fengjiening.sparrow.registry.AbsRegistry;
 

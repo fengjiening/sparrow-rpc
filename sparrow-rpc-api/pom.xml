@@ -10,6 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sparrow-rpc-api</artifactId>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.fengjiening</groupId>
+            <artifactId>sparrow-rpc-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
 </project>

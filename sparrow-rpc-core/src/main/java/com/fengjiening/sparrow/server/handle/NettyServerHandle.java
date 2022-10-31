@@ -1,5 +1,9 @@
 package com.fengjiening.sparrow.server.handle;
 
+import com.fengjiening.sparrow.config.protocol.SparrowSerializer;
+import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.result.Result;
+import com.fengjiening.sparrow.utill.LogInterceptor;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -11,7 +15,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public class NettyServerHandle extends SimpleChannelInboundHandler<String> {
+public class NettyServerHandle extends SimpleChannelInboundHandler<Object> {
 
     /**
      * 接收客户端发送的数据
@@ -19,11 +23,20 @@ public class NettyServerHandle extends SimpleChannelInboundHandler<String> {
      * @param msg
      * @throws Exception
      */
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
-        System.out.println("messageReceived: " + msg);
+    @Override
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+
+        if(msg instanceof RemotingCommand){
+            RemotingCommand msg1 = (RemotingCommand) msg;
+            String s = msg1.getToken().toString();
+            byte[] body = msg1.getBody();
+            LogInterceptor.info("接收到的客户端发送的消息：" + s);
+            LogInterceptor.info("接收到的客户端发送的消息：" + SparrowSerializer.deserialize(body, Result.class));
+        }
+
         // 得到回写到客户端的channel
         Channel channel = channelHandlerContext.channel();
-        channel.write("服务端接受到的消息是: " + msg + "from server");
+        channel.write(" 已收到消息：" + msg + "");
         // 这里必须flush，否则客户端收不到消息（不会立刻发送，如果不进行flush）
         channel.flush();
         /*
@@ -39,7 +52,7 @@ public class NettyServerHandle extends SimpleChannelInboundHandler<String> {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelActive");
+        LogInterceptor.info("客户端接入" );
         super.channelActive(ctx);
     }
 
@@ -48,7 +61,7 @@ public class NettyServerHandle extends SimpleChannelInboundHandler<String> {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channelInactive");
+        LogInterceptor.info("客户端断开" );
         super.channelInactive(ctx);
     }
 
@@ -62,4 +75,5 @@ public class NettyServerHandle extends SimpleChannelInboundHandler<String> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
     }
+
 }

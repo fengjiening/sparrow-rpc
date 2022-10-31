@@ -1,6 +1,5 @@
 package com.fengjiening.sparrow.exception;
 
-import com.fengjiening.sparrow.enums.SparrowCode;
 import com.fengjiening.sparrow.contsants.CommonConstant;
 
 /**
@@ -15,6 +14,9 @@ public class SparrowException extends RuntimeException {
 
     public SparrowException(SparrowCode errorCode) {
         this(errorCode, (String)null, (Throwable)null);
+    }
+    public SparrowException(SparrowCode errorCode, String message) {
+        this(errorCode, message, (Throwable)null);
     }
     public SparrowException(SparrowCode errorCode, String message, Throwable cause) {
         super(message, cause);

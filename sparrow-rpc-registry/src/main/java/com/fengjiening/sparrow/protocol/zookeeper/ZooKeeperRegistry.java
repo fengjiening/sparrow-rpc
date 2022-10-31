@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.type.zookeeper;
+package com.fengjiening.sparrow.protocol.zookeeper;
 
 import com.fengjiening.sparrow.registry.AbsRegistry;
 

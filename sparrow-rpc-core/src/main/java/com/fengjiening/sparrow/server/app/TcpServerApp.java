@@ -1,11 +1,17 @@
 package com.fengjiening.sparrow.server.app;
+import com.fengjiening.sparrow.config.SparrowDecoder;
+import com.fengjiening.sparrow.config.SparrowEncoder;
 import com.fengjiening.sparrow.server.handle.NettyServerHandle;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @ClassName: ServerApp
@@ -29,18 +35,6 @@ public class TcpServerApp {
 
             // 设置nioSocket工厂,和三有不同
             serverBootstrap.channel(NioServerSocketChannel.class);
-
-            // 设置管道工厂,和3也有不同
-            serverBootstrap.childHandler(new ChannelInitializer<Channel>() {
-
-                @Override
-                protected void initChannel(Channel channel) throws Exception {
-                    channel.pipeline().addLast("encoder", new StringEncoder());
-                    channel.pipeline().addLast("decoder", new StringDecoder());
-                    channel.pipeline().addLast("serverHandler", new NettyServerHandle());
-                }
-            });
-
             // 设置参数，TCP参数
             // serverSocketChannel的设置，连接缓冲池的大小，accept的最大连接数
             serverBootstrap.option(ChannelOption.SO_BACKLOG, 2048);
@@ -49,11 +43,23 @@ public class TcpServerApp {
             // socketChannel的设置，关闭延迟发送（就是关闭缓冲池）
             serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
 
+            serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
+            // 设置管道工厂,和3也有不同
+            serverBootstrap.childHandler(new ChannelInitializer<Channel>() {
+
+                @Override
+                protected void initChannel(Channel channel) throws Exception {
+                    channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4));
+                    channel.pipeline().addLast(new LengthFieldPrepender(4));
+                    channel.pipeline().addLast(new SparrowEncoder());
+                    channel.pipeline().addLast( new SparrowDecoder());
+                    channel.pipeline().addLast( new NettyServerHandle());
+                }
+            });
+
             // 绑定端口
             ChannelFuture future = serverBootstrap.bind(10101);
-
             System.out.println("服务端正常启动！！");
-
             // 等待服务端关闭, 该方法会阻塞在这里, 关闭后执行
             // 该管道是serverSocketChannel
             future.channel().closeFuture().sync();
