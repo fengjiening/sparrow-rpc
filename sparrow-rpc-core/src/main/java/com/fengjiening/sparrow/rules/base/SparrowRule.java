@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.rules;
+package com.fengjiening.sparrow.rules.base;
 
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
 import lombok.AllArgsConstructor;

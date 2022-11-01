@@ -1,6 +1,7 @@
 package com.fengjiening.sparrow.rules;
 
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.rules.base.SparrowRule;
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Rule;
 
@@ -12,7 +13,7 @@ import org.jeasy.rules.annotation.Rule;
  * @Version: 1.0
  */
 @Rule(name = "ValidationProtocolRule", description = "ValidationProtocolRule")
-public class ValidationProtocolRule extends SparrowRule{
+public class ValidationProtocolRule extends SparrowRule {
 
     public ValidationProtocolRule(RemotingCommand command) {
         super(command);

@@ -15,7 +15,8 @@ public class LogInterceptor {
         log.info(format(message));
     }
     public static void debug(String message){
-        log.debug(format(message));
+        //log.debug(format(message));
+        System.err.println(format(message));
     }
     public static void error(String message){
         log.error(format(message));

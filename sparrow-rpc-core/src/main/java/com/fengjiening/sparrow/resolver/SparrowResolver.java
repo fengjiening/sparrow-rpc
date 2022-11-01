@@ -1,14 +1,14 @@
 package com.fengjiening.sparrow.resolver;
 
+import com.fengjiening.sparrow.config.SparrowThread;
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
 import com.fengjiening.sparrow.context.SparrowContext;
 import com.fengjiening.sparrow.contsants.CommonConstant;
 import com.fengjiening.sparrow.manager.SparrowManage;
-import com.fengjiening.sparrow.pool.SparrowThreadPool;
+import com.fengjiening.sparrow.config.SparrowThreadPool;
 import com.fengjiening.sparrow.utill.SparrowOptional;
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.Optional;
 import java.util.concurrent.Executor;
 
 /**
@@ -38,9 +38,9 @@ public abstract class  SparrowResolver implements Resolver{
         pool.execute(new Runnable() {
             @Override
             public void run() {
-                SparrowManage.channelThreadLocal.set(channelHandlerContext);
-                execute(SparrowManage.channelThreadLocal.get());
-                SparrowManage.channelThreadLocal.remove();
+                SparrowThread.channelThreadLocal.set(channelHandlerContext);
+                execute(SparrowThread.channelThreadLocal.get());
+                SparrowThread.channelThreadLocal.remove();
             }
         });
     };

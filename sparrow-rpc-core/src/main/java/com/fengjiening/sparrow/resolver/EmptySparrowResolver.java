@@ -1,5 +1,6 @@
 package com.fengjiening.sparrow.resolver;
 
+import com.fengjiening.sparrow.config.SparrowThread;
 import com.fengjiening.sparrow.enums.ResolverType;
 import com.fengjiening.sparrow.manager.SparrowManage;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,6 +20,5 @@ public class EmptySparrowResolver extends SparrowResolver{
 
     @Override
     public void execute(ChannelHandlerContext channelHandlerContext) {
-        SparrowManage.channelThreadLocal.set(channelHandlerContext);
     }
 }

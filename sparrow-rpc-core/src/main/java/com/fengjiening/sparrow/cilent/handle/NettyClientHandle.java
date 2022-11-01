@@ -21,6 +21,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public class NettyClientHandle extends SimpleChannelInboundHandler<RemotingCommand> {
     private static SparrowResolverFactory sparrowResolverFactory=SparrowResolverFactory.getInstance();
+
     /**
      * 接收客户端发送的数据
      * rpc请求接受

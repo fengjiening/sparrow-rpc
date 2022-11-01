@@ -1,4 +1,4 @@
-package com.fengjiening.sparrow.pool;
+package com.fengjiening.sparrow.config;
 
 import com.fengjiening.sparrow.utill.LogInterceptor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
