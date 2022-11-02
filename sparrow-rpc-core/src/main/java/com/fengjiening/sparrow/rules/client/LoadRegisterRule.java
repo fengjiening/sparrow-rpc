@@ -16,7 +16,7 @@ import org.jeasy.rules.annotation.Rule;
  */
 @Rule(name = "LoadRegisterRule", description = "LoadRegisterRule")
 public class LoadRegisterRule extends InstallRule {
-    @Action(order = 3)
+    @Action(order = 4)
     @Override
     public void then() throws Exception {
         LogInterceptor.debug("LoadRegisterRule..加载注册中心");

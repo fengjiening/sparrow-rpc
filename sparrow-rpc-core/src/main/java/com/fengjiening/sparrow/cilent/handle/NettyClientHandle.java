@@ -1,13 +1,16 @@
 package com.fengjiening.sparrow.cilent.handle;
 
+import com.fengjiening.sparrow.config.SparrowDecoder;
+import com.fengjiening.sparrow.config.SparrowEncoder;
 import com.fengjiening.sparrow.config.protocol.SparrowProtocol;
-import com.fengjiening.sparrow.config.protocol.SparrowSerializer;
-import com.fengjiening.sparrow.config.vo.ChannelData;
+import com.fengjiening.sparrow.config.serializer.ProtostuffSerializer;
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.context.SparrowContext;
 import com.fengjiening.sparrow.enums.SerializeType;
 import com.fengjiening.sparrow.factory.SparrowResolverFactory;
 import com.fengjiening.sparrow.resolver.SparrowResolver;
 import com.fengjiening.sparrow.result.Result;
+import com.fengjiening.sparrow.serializer.SparrowSerializer;
 import com.fengjiening.sparrow.utill.LogInterceptor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,11 +48,16 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<RemotingComma
         LogInterceptor.info("服务端接入");
         super.channelActive(ctx);
         Result<Object> ok = Result.ok("hahah");
-        byte[] serialize = SparrowSerializer.serialize(ok);
+
+        SparrowDecoder decoder = SparrowContext.rpcProtocol.getDecoder();
+        SparrowEncoder encoder = SparrowContext.rpcProtocol.getEncoder();
+        SparrowSerializer serializer = SparrowContext.rpcProtocol.getSerializer();
+        byte[] serialize = serializer.serialize(ok);
+
 
         RemotingCommand command = RemotingCommand.builder()
                 .length(serialize.length+ SparrowProtocol.HEADER_LENGTH).id(999)
-                .serializeType(SerializeType.SPARROW)
+                .serializeType(serializer.type())
                 .token("1ca2f21bdc0f3ab383cd21518ff357ec".getBytes()).body(serialize).build();
         ctx.writeAndFlush(command);
     }

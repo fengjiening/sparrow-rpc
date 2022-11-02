@@ -27,6 +27,9 @@ public class SparrowException extends RuntimeException {
         }
 
     }
+    public SparrowException(String errorCode, String message) {
+        this(new SparrowCode(errorCode), message, (Throwable)null);
+    }
 
     public SparrowCode getErrorCode() {
         return this.code;

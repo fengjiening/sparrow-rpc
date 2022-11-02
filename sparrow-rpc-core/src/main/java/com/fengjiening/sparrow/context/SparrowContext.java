@@ -1,5 +1,6 @@
 package com.fengjiening.sparrow.context;
 
+import com.fengjiening.sparrow.config.protocol.SparrowProtocol;
 import com.fengjiening.sparrow.manager.EngineManager;
 import com.fengjiening.sparrow.protocol.Protocol;
 import com.fengjiening.sparrow.exception.SparrowCode;
@@ -24,13 +25,13 @@ import java.util.UUID;
  * @Version: 1.0
  */
 public class SparrowContext implements ApplicationContextAware, InitializingBean{
-    protected static SparrowContext sparrowContext;
-    protected static SparrowProperties properties;
-    protected static ApplicationContext applicationContext;
-    protected static Protocol rpcProtocol;
-    protected static String SparrowToken;
-    protected static String contextUuid;
-    protected static EngineManager engineManager=new EngineManager();
+    public static String contextUuid;
+    public static SparrowContext sparrowContext;
+    public static SparrowProperties properties;
+    public static ApplicationContext applicationContext;
+    public static SparrowProtocol rpcProtocol=new SparrowProtocol();
+    public static String SparrowToken;
+    public static EngineManager engineManager=new EngineManager();
 
     public static SparrowContext getInstance() {
         return sparrowContext;

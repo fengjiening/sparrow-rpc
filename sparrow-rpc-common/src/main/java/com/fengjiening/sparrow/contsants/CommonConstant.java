@@ -26,6 +26,7 @@ public interface CommonConstant {
      * 配置常量
      */
     public static final String  PROPERTIES_CONSTANT_RESOLVER= "sparrow.rpc.resolver";
+    public static final String  PROPERTIES_TIME_OUT= "sparrow.rpc.timeout";
     /**
      * 访问权限认证未通过 510
      */
@@ -38,5 +39,7 @@ public interface CommonConstant {
     public static final String SPARROW_TYPE_NOT_FIND_ERROR_CODE = "9021";
     //连接异常
     public static final String SPARROW_TYPE_CONNECT_FAILD_ERROR_CODE = "9091";
+    //通用错误
+    public static final String SPARROW_TYPE_COMMON_ERROR_CODE = "9500";
 
 }

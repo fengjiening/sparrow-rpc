@@ -3,6 +3,8 @@ package com.fengjiening.sparrow.config.protocol;
 import com.fengjiening.sparrow.config.SparrowDecoder;
 import com.fengjiening.sparrow.config.SparrowEncoder;
 import com.fengjiening.sparrow.protocol.Protocol;
+import com.fengjiening.sparrow.serializer.SparrowSerializer;
+import lombok.Data;
 
 /**
  * @ClassName: Protocol
@@ -11,9 +13,11 @@ import com.fengjiening.sparrow.protocol.Protocol;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public abstract class SparrowProtocol implements Protocol {
+@Data
+public  class SparrowProtocol implements Protocol {
      private SparrowDecoder decoder;
      private SparrowEncoder encoder;
+     private SparrowSerializer serializer;
     /**
      * 协议码
      */
@@ -21,21 +25,4 @@ public abstract class SparrowProtocol implements Protocol {
     public static final int HEADER_LENGTH = 39;
     public static final int TOKEN_LENGTH = 32;
 
-
-
-    public SparrowDecoder getDecoder() {
-        return decoder;
-    }
-
-    public void setDecoder(SparrowDecoder decoder) {
-        this.decoder = decoder;
-    }
-
-    public SparrowEncoder getEncoder() {
-        return encoder;
-    }
-
-    public void setEncoder(SparrowEncoder encoder) {
-        this.encoder = encoder;
-    }
 }

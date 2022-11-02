@@ -1,6 +1,6 @@
 package com.fengjiening.sparrow.server.handle;
 
-import com.fengjiening.sparrow.config.protocol.SparrowSerializer;
+import com.fengjiening.sparrow.config.serializer.ProtostuffSerializer;
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
 import com.fengjiening.sparrow.result.Result;
 import com.fengjiening.sparrow.utill.LogInterceptor;
@@ -31,7 +31,7 @@ public class NettyServerHandle extends SimpleChannelInboundHandler<Object> {
             String s = msg1.getToken().toString();
             byte[] body = msg1.getBody();
             LogInterceptor.info("接收到的客户端发送的消息：" + s);
-            LogInterceptor.info("接收到的客户端发送的消息：" + SparrowSerializer.deserialize(body, Result.class));
+            LogInterceptor.info("接收到的客户端发送的消息：" + ProtostuffSerializer.deserialize(body, Result.class));
         }
 
         // 得到回写到客户端的channel

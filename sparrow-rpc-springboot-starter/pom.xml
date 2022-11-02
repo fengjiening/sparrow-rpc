@@ -11,5 +11,11 @@
 
     <artifactId>sparrow-rpc-springboot-starter</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.fengjiening</groupId>
+            <artifactId>sparrow-rpc-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
+    </dependencies>
 </project>

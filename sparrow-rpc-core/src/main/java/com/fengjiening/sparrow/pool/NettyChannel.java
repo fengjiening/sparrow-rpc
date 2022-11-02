@@ -3,6 +3,7 @@ package com.fengjiening.sparrow.pool;
 import com.fengjiening.sparrow.cilent.handle.NettyClientHandle;
 import com.fengjiening.sparrow.config.SparrowDecoder;
 import com.fengjiening.sparrow.config.SparrowEncoder;
+import com.fengjiening.sparrow.context.SparrowContext;
 import com.fengjiening.sparrow.contsants.CommonConstant;
 import com.fengjiening.sparrow.utill.SparrowOptional;
 import io.netty.bootstrap.AbstractBootstrap;
@@ -40,6 +41,8 @@ public class NettyChannel {
     }
 
     public void connect() {
+        SparrowDecoder decoder = SparrowContext.rpcProtocol.getDecoder();
+        SparrowEncoder encoder = SparrowContext.rpcProtocol.getEncoder();
         bootstrap=new Bootstrap();
         worker= new NioEventLoopGroup();
         // 设置线程池
@@ -56,8 +59,8 @@ public class NettyChannel {
                     // 添加用于处理粘包和拆包问题的处理器
                     channel.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4));
                     channel.pipeline().addLast(new LengthFieldPrepender(4));
-                    channel.pipeline().addLast( new SparrowEncoder());
-                    channel.pipeline().addLast(new SparrowDecoder());
+                    channel.pipeline().addLast(encoder);
+                    channel.pipeline().addLast(decoder);
                     channel.pipeline().addLast(nettyClientHandler);
                 }
             });
@@ -73,6 +76,7 @@ public class NettyChannel {
     public void shutdown(){
         if(!ObjectUtils.isEmpty(worker)){
             worker.shutdownGracefully();
+            channel.closeFuture().syncUninterruptibly();
         }
     }
 }

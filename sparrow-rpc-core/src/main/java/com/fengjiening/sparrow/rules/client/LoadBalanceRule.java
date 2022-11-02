@@ -27,7 +27,7 @@ public class LoadBalanceRule extends InstallRule {
 
 
 
-    @Action(order = 2)
+    @Action(order = 3)
     @Override
     public void then() throws Exception {
         LogInterceptor.debug("LoadBalanceRule..加载负载");

@@ -38,7 +38,6 @@ public class EngineManager implements SparrowManage{
     }
     public static List<InstallRule>  installCilentApp(){
         rules.add(new InitPoolRule());
-        rules.add(new InitPoolRule());
         rules.add(new LoadBalanceRule());
         rules.add(new LoadRegisterRule());
         return rules;

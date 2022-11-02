@@ -16,7 +16,7 @@ import java.util.UUID;
 public class test_client {
     public static void main(String[] args) throws InterruptedException {
         //new TcpClientApp().start();
-        //System.err.print(UUIDUtil.getConcurrentUUID(UUID.randomUUID().toString()));
+        System.err.print(UUIDUtil.getConcurrentUUID(UUID.randomUUID().toString()));
 
 
     }

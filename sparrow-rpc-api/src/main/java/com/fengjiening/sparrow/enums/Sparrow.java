@@ -1,22 +1,22 @@
 package com.fengjiening.sparrow.enums;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 
 /**
- * @ClassName: SerializeType
- * @Description: 序列化枚举
+ * @ClassName: Sparrow
+ * @Description: 服务类型
  * @Date: 2022/10/27 11:23
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public enum SerializeType {
-    JSON((byte) 0),
-    Protostuff((byte) 1);
+public enum Sparrow {
+    Server((byte) 0),
+    Slient((byte) 1),
+    All((byte) 2);
 
     private byte code;
-    SerializeType(byte code) {
+    Sparrow(byte code) {
         this.code = code;
     }
     public byte getValue() {
@@ -25,8 +25,8 @@ public enum SerializeType {
     public void setValue(byte code) {
         this.code = code;
     }
-    public static SerializeType find(byte value){
-        Optional<SerializeType> type=  Arrays.stream(SerializeType.values()).filter(e -> e.code==value).findFirst();
+    public static Sparrow find(byte value){
+        Optional<Sparrow> type=  Arrays.stream(Sparrow.values()).filter(e -> e.code==value).findFirst();
         return type.get();
     }
 }

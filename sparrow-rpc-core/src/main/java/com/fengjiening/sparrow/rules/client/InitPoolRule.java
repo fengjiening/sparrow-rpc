@@ -1,6 +1,8 @@
 package com.fengjiening.sparrow.rules.client;
 
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.context.SparrowContext;
+import com.fengjiening.sparrow.contsants.CommonConstant;
 import com.fengjiening.sparrow.manager.CilentManager;
 import com.fengjiening.sparrow.manager.SparrowManage;
 import com.fengjiening.sparrow.pool.ChannelPool;
@@ -13,6 +15,8 @@ import io.netty.bootstrap.AbstractBootstrap;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Rule;
+
+import java.net.Inet4Address;
 
 /**
  * @ClassName: InitPoolRule
@@ -29,18 +33,16 @@ public class InitPoolRule extends InstallRule {
     @Override
     public void then() throws Exception {
         LogInterceptor.debug("InitPoolRule..初始化连接池");
-        String host="127.0.0.1";
-        int port=10101;
-
+        String serverHost = Inet4Address.getLocalHost().getHostAddress();
+        int port = Integer.valueOf(SparrowContext.getProperties("sparrow.rpc.client.port", "10101").toString());
+        int maxidle = Integer.valueOf(SparrowContext.getProperties("sparrow.rpc.client.maxidle", "10").toString());
+        int minidle = Integer.valueOf(SparrowContext.getProperties("sparrow.rpc.client.minidle", "1").toString());
+        int maxtotal = Integer.valueOf(SparrowContext.getProperties("sparrow.rpc.client.maxtotal", "100").toString());
         SparrowPoolConfig config=new SparrowPoolConfig();
-        config.setMaxIdle(10);//最大活跃数
-        config.setMinIdle(1);//最小活跃数
-        config.setMaxTotal(100);//最大总数
+        config.setMaxIdle(maxidle);//最大活跃数
+        config.setMinIdle(minidle);//最小活跃数
+        config.setMaxTotal(maxtotal);//最大总数
         //创建资源池
-        CilentManager.initChannelPool(new ChannelPool(config,host,port));
-        //获取连接
-       // NettyChannel nettyChannel=channelPool.getResource();
-
-
+        CilentManager.initChannelPool(new ChannelPool(config,serverHost,port));
     }
 }
