@@ -1,28 +1,20 @@
 package com.fengjiening.sparrow.cilent.app;
 
-import com.fengjiening.sparrow.cilent.handle.NettyClientHandle;
-import com.fengjiening.sparrow.config.SparrowDecoder;
-import com.fengjiening.sparrow.config.SparrowEncoder;
-import com.fengjiening.sparrow.manager.CilentManager;
-import com.fengjiening.sparrow.manager.EngineManager;
-import com.fengjiening.sparrow.rules.base.InstallRule;
+import com.fengjiening.sparrow.config.SparrowThread;
+import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.context.SparrowContext;
+import com.fengjiening.sparrow.contsants.CommonConstant;
+import com.fengjiening.sparrow.entity.RpcResponse;
+import com.fengjiening.sparrow.exception.SparrowException;
+import com.fengjiening.sparrow.manager.CilentPoolManager;
+import com.fengjiening.sparrow.pool.NettyChannel;
+import com.fengjiening.sparrow.pool.SparrowChannelPool;
 import com.fengjiening.sparrow.server.SparrowPlatform;
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import lombok.SneakyThrows;
-import org.jeasy.rules.api.RulesEngine;
-import org.springframework.util.ObjectUtils;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 
 
 /**
@@ -32,16 +24,46 @@ import java.util.List;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public class TcpClientApp implements SparrowPlatform {
+public class TcpClientApp extends SparrowPlatform {
+
+    @Override
+    public void init() {
+        //先去找服务地址
+
+        //然后
+    }
 
     @Override
     public void startUp()  {
-        List<InstallRule> installRules = EngineManager.installCilentApp();
-        new EngineManager().execute(installRules);
+        //启动
     }
 
     @Override
     public void shutDown() throws Exception {
-        CilentManager.close();
+
     }
+
+    //public  RpcResponse send(RemotingCommand data) throws TimeoutException {
+    //    String sync = SparrowContext.getProperties(CommonConstant.PROPERTIES_CONSTANT_RESOLVER, "60").toString();
+    //    int time = Integer.valueOf(sync);
+    //
+    //    SynchronousQueue<RpcResponse> queue = new SynchronousQueue<>();
+    //    queueMap.put(data.getOid(),queue);
+    //    SparrowChannelPool channelPool = SparrowThread.channelPoolThreadLocal.get();
+    //    NettyChannel resource = getResource();
+    //    if(resource!=null){
+    //        try {
+    //            resource.getChannel().writeAndFlush(data);
+    //            return queue.poll(time, TimeUnit.SECONDS);
+    //        } catch (InterruptedException e) {
+    //            TimeoutException timeoutException = new TimeoutException("请求服务端超时，请稍后重试，或调整超时时间sparrow.rpc.timeout配置");
+    //            return RpcResponse.builder().exception(timeoutException).build();
+    //        }finally {
+    //            channelPool.returnResource(resource);
+    //        }
+    //    }else{
+    //        SparrowException timeoutException = new SparrowException(CommonConstant.SPARROW_TYPE_COMMON_ERROR_CODE,"服务不可用");
+    //        return RpcResponse.builder().exception(timeoutException).build();
+    //    }
+    //}
 }

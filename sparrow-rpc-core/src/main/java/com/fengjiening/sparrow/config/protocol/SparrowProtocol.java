@@ -22,7 +22,8 @@ public  class SparrowProtocol implements Protocol {
      * 协议码
      */
     public static final byte protocolCode = 0x11;
-    public static final int HEADER_LENGTH = 39;
+    public static final int ID_LENGTH = 18;
+    public static final int HEADER_LENGTH = 37+ID_LENGTH;
     public static final int TOKEN_LENGTH = 32;
 
 }

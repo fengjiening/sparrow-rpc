@@ -24,13 +24,11 @@ import org.springframework.util.ObjectUtils;
  * @Version: 1.0
  */
 public class NettyChannel {
-    private String host;
-    private int port;
+    private com.fengjiening.sparrow.config.vo.Channel conf;
     private Bootstrap  bootstrap ;
     private EventLoopGroup  worker;
-    public NettyChannel(String host, int port){
-            this.host=host;
-            this.port=port;
+    public NettyChannel(com.fengjiening.sparrow.config.vo.Channel conf){
+            this.conf=conf;
             connect();
 
     }
@@ -66,7 +64,7 @@ public class NettyChannel {
             });
             //ChannelFuture future = boot.connect(host, port).sync();
             //future.channel().closeFuture().sync();
-            channel = bootstrap.connect(host, port).sync().channel();
+            channel = bootstrap.connect(conf.getHost(), conf.getPort()).sync().channel();
         }catch (Exception es){
             SparrowOptional.throwsException(CommonConstant.SPARROW_TYPE_CONNECT_FAILD_ERROR_CODE,"无法连接服务端");
         }finally {

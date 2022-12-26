@@ -2,7 +2,9 @@ package com.fengjiening.sparrow.server.handle;
 
 import com.fengjiening.sparrow.config.serializer.ProtostuffSerializer;
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
+import com.fengjiening.sparrow.context.SparrowContext;
 import com.fengjiening.sparrow.result.Result;
+import com.fengjiening.sparrow.serializer.SparrowSerializer;
 import com.fengjiening.sparrow.utill.LogInterceptor;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,13 +27,13 @@ public class NettyServerHandle extends SimpleChannelInboundHandler<Object> {
      */
     @Override
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-
+        SparrowSerializer serializer = SparrowContext.rpcProtocol.getSerializer();
         if(msg instanceof RemotingCommand){
             RemotingCommand msg1 = (RemotingCommand) msg;
             String s = msg1.getToken().toString();
             byte[] body = msg1.getBody();
             LogInterceptor.info("接收到的客户端发送的消息：" + s);
-            LogInterceptor.info("接收到的客户端发送的消息：" + ProtostuffSerializer.deserialize(body, Result.class));
+            LogInterceptor.info("接收到的客户端发送的消息：" + serializer.deserialize(body, Result.class));
         }
 
         // 得到回写到客户端的channel

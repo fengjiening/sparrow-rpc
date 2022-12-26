@@ -2,6 +2,7 @@ package com.fengjiening.sparrow.config.serializer;
 
 import com.fengjiening.sparrow.enums.SerializeType;
 import com.fengjiening.sparrow.serializer.SparrowSerializer;
+import com.fengjiening.sparrow.utill.SnowFlake;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;

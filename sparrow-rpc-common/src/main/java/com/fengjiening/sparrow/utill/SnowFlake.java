@@ -94,4 +94,12 @@ public class SnowFlake {
     private long getNewstmp() {
         return System.currentTimeMillis();
     }
+
+    public static void main(String[] args) {
+        SnowFlake snowFlake = new SnowFlake(0, 0);
+        String s = snowFlake.nextId();
+        System.err.println(s);
+
+        System.err.print(s.getBytes().length);
+    }
 }

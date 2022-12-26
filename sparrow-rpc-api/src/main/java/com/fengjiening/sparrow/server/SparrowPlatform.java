@@ -7,7 +7,12 @@ package com.fengjiening.sparrow.server;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public interface SparrowPlatform {
-    public void startUp();
-    public void shutDown() throws Exception;
+public abstract class SparrowPlatform {
+    public SparrowPlatform(){
+        init();
+        startUp();
+    }
+    public abstract void init();
+    public abstract void startUp();
+    public abstract void shutDown() throws Exception;
 }

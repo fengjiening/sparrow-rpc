@@ -26,7 +26,7 @@ public  class SparrowEncoder extends MessageToByteEncoder<RemotingCommand> {
         //解析器类型 1
         byteBuf.writeByte( rpcBufferVo.getResolverType().getType());
         //请求id 4
-        byteBuf.writeInt( rpcBufferVo.getId());
+        byteBuf.writeBytes(rpcBufferVo.getId());
         //token 32
         byteBuf.writeBytes(rpcBufferVo.getToken());
         //报文体

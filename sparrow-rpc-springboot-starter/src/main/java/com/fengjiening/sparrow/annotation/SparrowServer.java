@@ -1,9 +1,6 @@
 package com.fengjiening.sparrow.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * @ClassName: SparrowServer
@@ -12,9 +9,10 @@ import java.lang.annotation.Target;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
+@Target({ElementType.TYPE,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Inherited
 public @interface SparrowServer {
     String provider() default "";
-    int version();
+    int version()  default 1;
 }

@@ -33,7 +33,9 @@ public  class SparrowDecoder extends ByteToMessageDecoder {
             }
             byte serializeType = in.readByte();
             byte resolverType = in.readByte();
-            int id = in.readInt();
+            //int id = in.readInt();
+            byte[] id = new byte[SparrowProtocol.ID_LENGTH];
+            in.readBytes(id);
             byte[] token = new byte[SparrowProtocol.TOKEN_LENGTH];
             in.readBytes(token);
             byte[] body = new byte[allLength-SparrowProtocol.HEADER_LENGTH];

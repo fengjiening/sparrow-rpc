@@ -22,7 +22,8 @@ public class RemotingCommand implements Serializable {
     private SerializeType serializeType;
     private int protocolCode;
     private ResolverType resolverType;
-    private String id;
+    private byte[] id;
+    private transient String oid;
     private byte[] token;
     private int length;
     private byte[] body;

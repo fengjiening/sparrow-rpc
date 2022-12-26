@@ -1,18 +1,11 @@
 package com.fengjiening.sparrow.rules.client;
 
-import com.fengjiening.sparrow.config.vo.RemotingCommand;
 import com.fengjiening.sparrow.context.SparrowContext;
-import com.fengjiening.sparrow.contsants.CommonConstant;
-import com.fengjiening.sparrow.manager.CilentManager;
-import com.fengjiening.sparrow.manager.SparrowManage;
-import com.fengjiening.sparrow.pool.ChannelPool;
-import com.fengjiening.sparrow.pool.NettyChannel;
+import com.fengjiening.sparrow.manager.CilentPoolManager;
+import com.fengjiening.sparrow.pool.SparrowChannelPool;
 import com.fengjiening.sparrow.pool.SparrowPoolConfig;
 import com.fengjiening.sparrow.rules.base.InstallRule;
-import com.fengjiening.sparrow.rules.base.SparrowRule;
 import com.fengjiening.sparrow.utill.LogInterceptor;
-import io.netty.bootstrap.AbstractBootstrap;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Rule;
 
@@ -43,6 +36,5 @@ public class InitPoolRule extends InstallRule {
         config.setMinIdle(minidle);//最小活跃数
         config.setMaxTotal(maxtotal);//最大总数
         //创建资源池
-        CilentManager.initChannelPool(new ChannelPool(config,serverHost,port));
     }
 }

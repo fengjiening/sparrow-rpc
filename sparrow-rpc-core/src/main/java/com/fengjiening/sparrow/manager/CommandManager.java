@@ -64,10 +64,11 @@ public class CommandManager {
     //    }
     //    return null;
     //}
-    private  RemotingCommand.RemotingCommandBuilder createHeader(String id, SparrowSerializer serializer){
+    public  RemotingCommand.RemotingCommandBuilder createHeader(String id, SparrowSerializer serializer){
         String token= UUIDUtil.getConcurrentUUID(SparrowContext.contextUuid);
-       return  RemotingCommand.builder()
-                .id(id)
+        return  RemotingCommand.builder()
+                .resolverType(ResolverType.REQUEST)
+                .id(serializer.serialize(id))
                 .protocolCode(SparrowProtocol.protocolCode)
                 .token(serializer.serialize(token))
                 .serializeType(serializer.type());

@@ -4,8 +4,7 @@ import com.fengjiening.sparrow.config.SparrowThread;
 import com.fengjiening.sparrow.config.vo.RemotingCommand;
 import com.fengjiening.sparrow.context.SparrowContext;
 import com.fengjiening.sparrow.contsants.CommonConstant;
-import com.fengjiening.sparrow.manager.SparrowManage;
-import com.fengjiening.sparrow.config.SparrowThreadPool;
+import com.fengjiening.sparrow.utill.SparrowThreadPool;
 import com.fengjiening.sparrow.utill.SparrowOptional;
 import io.netty.channel.ChannelHandlerContext;
 

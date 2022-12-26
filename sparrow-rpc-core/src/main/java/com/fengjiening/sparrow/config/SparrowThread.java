@@ -1,6 +1,6 @@
 package com.fengjiening.sparrow.config;
 
-import com.fengjiening.sparrow.pool.ChannelPool;
+import com.fengjiening.sparrow.pool.SparrowChannelPool;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -12,5 +12,5 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class SparrowThread {
     public static ThreadLocal<ChannelHandlerContext> channelThreadLocal = new ThreadLocal<>();
-    public static ThreadLocal<ChannelPool> channelPoolThreadLocal = new ThreadLocal<>();
+    public static ThreadLocal<SparrowChannelPool> channelPoolThreadLocal = new ThreadLocal<>();
 }

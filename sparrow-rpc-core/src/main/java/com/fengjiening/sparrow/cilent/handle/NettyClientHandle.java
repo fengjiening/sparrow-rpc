@@ -39,35 +39,4 @@ public class NettyClientHandle extends SimpleChannelInboundHandler<RemotingComma
         resolver.doExecute(channelHandlerContext);
 
     }
-
-    /**
-     * 客户端接入
-     */
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        LogInterceptor.info("服务端接入");
-        super.channelActive(ctx);
-        Result<Object> ok = Result.ok("hahah");
-
-        SparrowDecoder decoder = SparrowContext.rpcProtocol.getDecoder();
-        SparrowEncoder encoder = SparrowContext.rpcProtocol.getEncoder();
-        SparrowSerializer serializer = SparrowContext.rpcProtocol.getSerializer();
-        byte[] serialize = serializer.serialize(ok);
-
-
-        RemotingCommand command = RemotingCommand.builder()
-                .length(serialize.length+ SparrowProtocol.HEADER_LENGTH).id(999)
-                .serializeType(serializer.type())
-                .token("1ca2f21bdc0f3ab383cd21518ff357ec".getBytes()).body(serialize).build();
-        ctx.writeAndFlush(command);
-    }
-
-    /**
-     * 客户端断开（相当于3的disConnected）
-     */
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        LogInterceptor.info("服务端断开");
-        super.channelInactive(ctx);
-    }
 }
