@@ -1,5 +1,6 @@
 package com.fengjiening.sparrow.processor;
 
+import com.fengjiening.sparrow.annotation.SparrowAutowired;
 import com.fengjiening.sparrow.annotation.SparrowServer;
 import com.fengjiening.sparrow.enums.Sparrow;
 import com.fengjiening.sparrow.proxy.SparrowProxy;
@@ -13,7 +14,7 @@ import java.lang.reflect.Field;
 
 /**
  * @ClassName: ClientPostProcessor
- * @Description: TODO
+ * @Description: springbean初始化之前执行
  * @Date: 2022/11/2 11:13
  * @Author: fengjiening::joko
  * @Version: 1.0
@@ -24,13 +25,12 @@ public class ClientPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Field[] fields = bean.getClass().getDeclaredFields();
-        LogInterceptor.info("==========="+bean.getClass().getName());
-        // 遍历bean的属性，找到有RpcAutowired注解的属性
+        // 遍历bean的属性，找到有SparrowServer注解的属性
         for (Field field : fields) {
 
-            if(field.isAnnotationPresent(SparrowServer.class)){
+            if(field.isAnnotationPresent(SparrowAutowired.class)){
                 try{
-                    SparrowServer annotation = field.getAnnotation(SparrowServer.class);
+                    SparrowAutowired annotation = field.getAnnotation(SparrowAutowired.class);
                     int version = annotation.version();
                     Object instance= SparrowProxy.instance(field.getType(), version);
                     field.setAccessible(true);

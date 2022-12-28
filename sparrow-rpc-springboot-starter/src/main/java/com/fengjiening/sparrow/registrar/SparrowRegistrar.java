@@ -13,16 +13,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @ClassName: SparrowServerRegistrar
- * @Description: 注册服务端
- * @Date: 2022/11/2 11:08
+ * @ClassName: SparrowCilentRegistrar
+ * @Description: 注册客户端
+ * @Date: 2022/11/2 11:07
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public class SparrowServerRegistrar implements ImportBeanDefinitionRegistrar {
+public class SparrowRegistrar implements ImportBeanDefinitionRegistrar {
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry beanDefinitionRegistry) {
-
         //获取EnableEcho注解的所有属性的value
         Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(EnableSparrow.class.getName());
         //获取package属性的value

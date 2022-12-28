@@ -15,7 +15,7 @@
         <lombok.version>1.18.22</lombok.version>
         <swagger.version>1.5.16</swagger.version>
         <fastjson.version>2.0.3</fastjson.version>
-        <netty.version>5.0.0.Alpha2</netty.version>
+        <sparrpw.netty.version>5.0.0.Alpha2</sparrpw.netty.version>
         <spring.version>5.3.11</spring.version>
         <protostuff.version>1.7.4</protostuff.version>
         <easy-rules.version>3.3.0</easy-rules.version>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
+            <version>${sparrpw.netty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

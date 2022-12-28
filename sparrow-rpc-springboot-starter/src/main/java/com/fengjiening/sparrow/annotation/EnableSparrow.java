@@ -1,8 +1,8 @@
 package com.fengjiening.sparrow.annotation;
 
 import com.fengjiening.sparrow.enums.Sparrow;
-import com.fengjiening.sparrow.registrar.SparrowCilentRegistrar;
-import com.fengjiening.sparrow.registrar.SparrowServerRegistrar;
+import com.fengjiening.sparrow.processor.ServerPostProcessor;
+import com.fengjiening.sparrow.registrar.SparrowRegistrar;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({SparrowCilentRegistrar.class,SparrowServerRegistrar.class})
+@Import({SparrowRegistrar.class})
 public @interface EnableSparrow {
     Sparrow type () default Sparrow.All;
 }

@@ -11,6 +11,6 @@ import com.fengjiening.sparrow.server.app.TcpServerApp;
  */
 public class test_server {
     public static void main(String[] args) throws InterruptedException {
-        new TcpServerApp().start();
+        new TcpServerApp(1234).start();
     }
 }

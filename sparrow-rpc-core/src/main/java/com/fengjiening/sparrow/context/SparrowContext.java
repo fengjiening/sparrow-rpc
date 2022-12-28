@@ -6,11 +6,9 @@ import com.fengjiening.sparrow.config.SparrowEncoder;
 import com.fengjiening.sparrow.config.protocol.SparrowProtocol;
 import com.fengjiening.sparrow.config.serializer.ProtostuffSerializer;
 import com.fengjiening.sparrow.manager.EngineManager;
-import com.fengjiening.sparrow.protocol.Protocol;
 import com.fengjiening.sparrow.exception.SparrowCode;
 import com.fengjiening.sparrow.exception.SparrowException;
 import com.fengjiening.sparrow.contsants.CommonConstant;
-import com.fengjiening.sparrow.rules.base.InstallRule;
 import com.fengjiening.sparrow.utill.LogInterceptor;
 import com.fengjiening.sparrow.utill.SnowFlake;
 import org.springframework.beans.BeansException;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +33,7 @@ import java.util.UUID;
 public class SparrowContext implements ApplicationContextAware, InitializingBean{
     public static String contextUuid;
     public static SparrowContext sparrowContext;
-    public static SparrowProperties properties;
+    public static PropertiesUtil properties;
     public static ApplicationContext applicationContext;
     public static SparrowProtocol rpcProtocol;
     public static String SparrowToken;
@@ -84,9 +81,9 @@ public class SparrowContext implements ApplicationContextAware, InitializingBean
 
     private void loadProperties() {
         long start = System.currentTimeMillis();
-        properties = Optional.ofNullable(properties).orElse(new SparrowProperties());
+        properties = Optional.ofNullable(properties).orElse(new PropertiesUtil());
         LogInterceptor.info("loading sparrow-rpc.properties file");
-        ClassLoader classLoader = SparrowProperties.class.getClassLoader();
+        ClassLoader classLoader = PropertiesUtil.class.getClassLoader();
         try(InputStream stream = classLoader.getResourceAsStream("sparrow-rpc.properties")){
             if(stream!=null){
                 properties.load(stream);

@@ -1,5 +1,7 @@
 package com.fengjiening.sparrow.annotation;
 
+import org.springframework.stereotype.Component;
+
 import java.lang.annotation.*;
 
 /**
@@ -9,10 +11,15 @@ import java.lang.annotation.*;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-@Target({ElementType.TYPE,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Inherited
+@Target(ElementType.TYPE)
+@Component
 public @interface SparrowServer {
-    String provider() default "";
-    int version()  default 1;
+
+
+    /**
+     * 版本号
+     * @return int
+     */
+    int version() default 0;
 }
