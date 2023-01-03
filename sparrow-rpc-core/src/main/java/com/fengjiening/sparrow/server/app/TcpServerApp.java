@@ -2,10 +2,21 @@ package com.fengjiening.sparrow.server.app;
 import com.fengjiening.sparrow.config.ConnectEventHandler;
 import com.fengjiening.sparrow.config.SparrowDecoder;
 import com.fengjiening.sparrow.config.SparrowEncoder;
+import com.fengjiening.sparrow.config.SparrowPlatform;
+import com.fengjiening.sparrow.contsants.CommonConstant;
+import com.fengjiening.sparrow.exception.SparrowCode;
+import com.fengjiening.sparrow.exception.SparrowException;
 import com.fengjiening.sparrow.manager.ConnectionManager;
 import com.fengjiening.sparrow.pool.Connection;
 import com.fengjiening.sparrow.pool.Url;
+import com.fengjiening.sparrow.protocol.local.LocalRegistry;
+import com.fengjiening.sparrow.registry.ProviderNode;
+import com.fengjiening.sparrow.registry.Registry;
+import com.fengjiening.sparrow.server.LocalServiceCache;
+import com.fengjiening.sparrow.server.ServiceInfo;
 import com.fengjiening.sparrow.server.handle.NettyServerHandle;
+import com.fengjiening.sparrow.spi.ExtensionLoader;
+import com.fengjiening.sparrow.utill.PropertiesUtil;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -19,8 +30,12 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
+import java.net.Inet4Address;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,7 +46,7 @@ import java.util.concurrent.TimeUnit;
  * @Version: 1.0
  */
 @Slf4j
-public class TcpServerApp {
+public class TcpServerApp extends SparrowPlatform {
     private EventLoopGroup boss;
     private EventLoopGroup worker;
     private final ServerBootstrap bootstrap;
@@ -43,19 +58,19 @@ public class TcpServerApp {
      * connect event handler
      */
     private ConnectEventHandler connectEventHandler;
+    /**
+     * 本地注册中心缓存
+     */
+    private  LocalRegistry localRegistry;
+
 
     /**
      * server port
      */
     private final int port;
 
-    public TcpServerApp( int port) {
-        this.bootstrap = new ServerBootstrap();
-        //this.codec = codec;
-        this.port = port;
-        //this.baseRemoting = new BaseRemoting(commandFactory);
-    }
-    public void init(){
+    @Override
+    public void setUp() {
         this.boss = new NioEventLoopGroup(1);
         this.worker = new NioEventLoopGroup();
 
@@ -125,6 +140,73 @@ public class TcpServerApp {
         //});
     }
 
+    @Override
+    public void startUp()  {
+        //启动
+        long start = System.currentTimeMillis();
+        try {
+            setUp();
+            ChannelFuture future = bootstrap.bind(port).sync();
+            if(future.isSuccess()){
+                log.info("server started, time used : {}ms", (System.currentTimeMillis() - start));
+                registrar();
+            }
+        }catch (Exception e){
+            log.error("server start failed, ", e);
+            boss.shutdownGracefully();
+            worker.shutdownGracefully();
+        }
+
+    }
+    /**
+     * 注册服务信息
+     */
+    private void registrar()throws UnknownHostException {
+        String registryType =   PropertiesUtil.get("sparrow.registry.type","zookeeper");
+        String serverHost = Inet4Address.getLocalHost().getHostAddress();
+        // 生成节点信息
+        ProviderNode node = ProviderNode.builder()
+                .url(serverHost + ":" + port)
+                .weight(10)
+                .lastHeartBeatTime(System.currentTimeMillis())
+                .build();
+        /*
+            创建注册中心客户端
+            如果没有配置注册中心，则以无注册中心模式启动
+         */
+        if(StringUtils.isEmpty(registryType)){
+            throw new SparrowException(new SparrowCode(CommonConstant.PROPERTIES_NOT_FIND_CODE),"sparrow.registry.typenot find");
+        }else{
+            ExtensionLoader<Registry> registryLoader = ExtensionLoader.getExtensionLoader(Registry.class);
+            Registry registry = registryLoader.getExtension(registryType);
+            this.localRegistry.setRemoteRegistry(registry);
+            // 初始化远程注册中心
+            registry.init();
+            registry.setLocalRegistry(localRegistry);
+            List<ServiceInfo> services = LocalServiceCache.listServices();
+            // 注册当前provider
+            registry.registerProvider(services, node);
+            // 开启注册中心心跳
+            registry.startHeartBeat(services, node);
+        }
+
+    }
+
+    @Override
+    public void shutDown() {
+        this.boss.shutdownGracefully();
+        this.worker.shutdownGracefully();
+    }
+
+
+    public TcpServerApp( int port) {
+        this.bootstrap = new ServerBootstrap();
+        //this.codec = codec;
+        this.port = port;
+        //this.baseRemoting = new BaseRemoting(commandFactory);
+        this.localRegistry = new LocalRegistry();
+    }
+
     private void createConnection(Channel channel){
         // parse url from SocketAddress
         Url url = Url.fromAddress((InetSocketAddress) channel.remoteAddress());
@@ -136,26 +218,5 @@ public class TcpServerApp {
         //    // bind the connection instance with channel
         //    new Connection(channel, url);
         //}
-    }
-
-    public  void start() {
-        long start = System.currentTimeMillis();
-        try {
-            init();
-            ChannelFuture future = bootstrap.bind(port).sync();
-            if(future.isSuccess()){
-                log.info("server started, time used : {}ms", (System.currentTimeMillis() - start));
-            }
-            future.channel().closeFuture().sync();
-        }catch (Exception e){
-            log.error("server start failed, ", e);
-            boss.shutdownGracefully();
-            worker.shutdownGracefully();
-        }
-    }
-
-    public void shutdown() {
-        this.boss.shutdownGracefully();
-        this.worker.shutdownGracefully();
     }
 }

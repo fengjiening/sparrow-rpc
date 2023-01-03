@@ -10,6 +10,7 @@ import com.fengjiening.sparrow.exception.SparrowCode;
 import com.fengjiening.sparrow.exception.SparrowException;
 import com.fengjiening.sparrow.contsants.CommonConstant;
 import com.fengjiening.sparrow.utill.LogInterceptor;
+import com.fengjiening.sparrow.utill.PropertiesUtil;
 import com.fengjiening.sparrow.utill.SnowFlake;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
@@ -33,7 +35,7 @@ import java.util.UUID;
 public class SparrowContext implements ApplicationContextAware, InitializingBean{
     public static String contextUuid;
     public static SparrowContext sparrowContext;
-    public static PropertiesUtil properties;
+    public static Properties properties;
     public static ApplicationContext applicationContext;
     public static SparrowProtocol rpcProtocol;
     public static String SparrowToken;
@@ -80,30 +82,15 @@ public class SparrowContext implements ApplicationContextAware, InitializingBean
     }
 
     private void loadProperties() {
-        long start = System.currentTimeMillis();
-        properties = Optional.ofNullable(properties).orElse(new PropertiesUtil());
-        LogInterceptor.info("loading sparrow-rpc.properties file");
-        ClassLoader classLoader = PropertiesUtil.class.getClassLoader();
-        try(InputStream stream = classLoader.getResourceAsStream("sparrow-rpc.properties")){
-            if(stream!=null){
-                properties.load(stream);
-            }else{
-                throw new IOException();
-            }
-        }catch (IOException e){
-            LogInterceptor.error("sparrow-rpc.properties not find file");
-            throw new SparrowException(new SparrowCode(CommonConstant.FILE_NOT_FIND_CODE),"sparrow-rpc.properties not find",e.getCause());
-        }
-        long end = System.currentTimeMillis();
-        LogInterceptor.info("loading sparrow-rpc.properties file finished,cost:"+(end - start) / 1000F+"s");
-    }
+        properties = Optional.ofNullable(properties).orElse(PropertiesUtil.getProperties());
+       }
 
 
     public static Object getProperties(String key,String def) {
-        return properties.get(key,def);
+        return PropertiesUtil.get(key,def);
     }
     public static Object getProperties(String key) {
-        return properties.get(key);
+        return PropertiesUtil.get(key);
     }
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

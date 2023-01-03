@@ -1,0 +1,1 @@
+zookeeper=com.fengjiening.sparrow.protocol.zookeeper.ZookeeperRegistry

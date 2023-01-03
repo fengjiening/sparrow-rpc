@@ -25,6 +25,11 @@
         </dependency>
         <dependency>
             <groupId>com.fengjiening</groupId>
+            <artifactId>sparrow-rpc-registry</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fengjiening</groupId>
             <artifactId>sparrow-rpc-api</artifactId>
             <version>${revision}</version>
         </dependency>

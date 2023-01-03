@@ -8,7 +8,28 @@
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <curator.version>2.7.0</curator.version>
+        <lombok.version>1.18.22</lombok.version>
+    </properties>
     <artifactId>sparrow-rpc-registry</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.fengjiening</groupId>
+            <artifactId>sparrow-rpc-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fengjiening</groupId>
+            <artifactId>sparrow-rpc-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- zookeeper client curator -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+    </dependencies>
 </project>

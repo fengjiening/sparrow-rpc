@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({SparrowRegistrar.class})
+@Import({SparrowRegistrar.class, ServerPostProcessor.class})
 public @interface EnableSparrow {
     Sparrow type () default Sparrow.All;
 }

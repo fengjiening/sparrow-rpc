@@ -17,5 +17,6 @@
             <artifactId>sparrow-rpc-third-party</artifactId>
             <version>${revision}</version>
         </dependency>
+
     </dependencies>
 </project>

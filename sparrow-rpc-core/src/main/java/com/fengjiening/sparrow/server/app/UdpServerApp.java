@@ -1,5 +1,6 @@
 package com.fengjiening.sparrow.server.app;
 
+import com.fengjiening.sparrow.config.SparrowPlatform;
 import com.fengjiening.sparrow.server.handle.NettyUpdServerHandle;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -13,7 +14,25 @@ import io.netty.channel.socket.nio.NioDatagramChannel;
  * @Author: fengjiening::joko
  * @Version: 1.0
  */
-public class UdpServerApp {
+public class UdpServerApp extends SparrowPlatform {
+
+
+    @Override
+    public void setUp() {
+        //先去找服务地址
+
+        //然后
+    }
+
+    @Override
+    public void startUp()  {
+
+    }
+
+    @Override
+    public void shutDown() {
+
+    }
 
     public  void start() throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
